@@ -13,12 +13,24 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});*/
+
+
+//Agregamos nuestra ruta al controller 
+//Route::resource('platillos', 'PlatilloController');
+//Agregamos nuestra ruta al controller 
+//Route::resource('ingredientes', 'IngredienteController');
+Route::group(['prefix' => 'auth'], function () {
+
+    // Whitout autentication
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signup');
+  
+    Route::group(['middleware' => 'auth:api'], function() {
+        // Whith autentication
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+    });
 });
-
-
-//Agregamos nuestra ruta al controller 
-Route::resource('platillos', 'PlatilloController');
-//Agregamos nuestra ruta al controller 
-Route::resource('ingredientes', 'IngredienteController');

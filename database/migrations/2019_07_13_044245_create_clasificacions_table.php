@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePlatillosTable extends Migration
+class CreateClasificacionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreatePlatillosTable extends Migration
      */
     public function up()
     {
-        Schema::create('platillos', function (Blueprint $table) {
+        Schema::create('clasificacions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('nombre');
+            $table->set('tipo', ['ingrediente','platillo','enfermedad']);
+            $table->boolean('visible')->default(true);
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreatePlatillosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('platillos');
+        Schema::dropIfExists('clasificacions');
     }
 }
