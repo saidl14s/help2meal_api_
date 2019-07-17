@@ -32,5 +32,7 @@ Route::group(['prefix' => 'auth'], function () {
         // Whith autentication
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
+        Route::resource('platillos', 'PlatilloController');
+        Route::resource('ingredientes', 'IngredienteController');
     });
 });
