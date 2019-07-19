@@ -32,4 +32,12 @@ class Ingrediente extends Model
     protected $casts = [
         
     ];
+
+    /**
+     *
+    */
+    public function clasificacion()
+    {
+        return $this->belongsTo(Clasificacion::class,'clasificacion_id','id');
+    }
 }

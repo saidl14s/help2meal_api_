@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \App\Ingrediente;
 use \App\Clasificacion;
 
-class IngredienteController extends Controller
+class ClasificacionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,8 @@ class IngredienteController extends Controller
     public function index()
     {
         //
-        //return Ingrediente::where('visible', 1)->get();
-        return Ingrediente::all();
+        //return Clasificacion::all();
+        return Clasificacion::where('visible', 1)->get();
     }
 
     /**
@@ -28,7 +27,6 @@ class IngredienteController extends Controller
     public function create()
     {
         //
-        return view('ingrediente.ingrediente-crear');
     }
 
     /**
@@ -40,9 +38,9 @@ class IngredienteController extends Controller
     public function store(Request $request)
     {
         //
-        Ingrediente::create($request->all());
+        Clasificacion::create($request->all());
         return response()->json([
-            'message'      => 'Successfully created ingredient'
+            'message'      => 'Successfully created clasification'
         ],201);
     }
 
@@ -55,12 +53,12 @@ class IngredienteController extends Controller
     public function show($id)
     {
         //
-        $clasificacion = collect(Ingrediente::find($id)->clasificacion);
-        $ingrediente = collect(Ingrediente::find($id));
+        $ingredientes = collect(Clasificacion::find($id)->ingredientes);
+        $clasificacion = collect(Clasificacion::find($id));
         return response()->json(
-            [
-                $ingrediente->put('clasificacion',$clasificacion)->all(),
-            ], 200);
+                //$clasificacion->put('ingredientes',$ingredientes)->all(),
+                //$ingredientes
+                Clasificacion::find($id)->ingredientes, 200);
     }
 
     /**
@@ -84,8 +82,6 @@ class IngredienteController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return response()->json([
-            'message' => 'Unauthorized'], 401);
     }
 
     /**
@@ -97,8 +93,5 @@ class IngredienteController extends Controller
     public function destroy($id)
     {
         //
-        return response()->json([
-            'message' => 'Unauthorized'], 401);
     }
-
 }

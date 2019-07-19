@@ -34,5 +34,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('user', 'AuthController@user');
         Route::resource('platillos', 'PlatilloController');
         Route::resource('ingredientes', 'IngredienteController');
+        Route::resource('clasificaciones', 'ClasificacionController');
+        // custom functions
     });
 });

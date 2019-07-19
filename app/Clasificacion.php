@@ -32,4 +32,12 @@ class Clasificacion extends Model
     protected $casts = [
         
     ];
+
+    /**
+     *
+    */
+    public function ingredientes()
+    {
+        return $this->hasMany(Ingrediente::class);
+    }
 }
