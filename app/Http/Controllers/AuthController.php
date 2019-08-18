@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Hash;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -71,6 +72,15 @@ class AuthController extends Controller
         $request->user()->token()->revoke();
         return response()->json(['message' => 
             'Successfully logged out']);
+    }
+
+    public function update(Request $request){
+        $user = User::find($request->user()->id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = Hash::make( $request->input('password') );
+        $user->save();
+        return $user;
     }
 
     public function user(Request $request)

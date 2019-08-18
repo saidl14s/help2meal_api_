@@ -32,8 +32,17 @@ Route::group(['prefix' => 'auth'], function () {
         // Whith autentication
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
+        Route::post('update', 'AuthController@update');
         Route::resource('platillos', 'PlatilloController');
+        Route::post('platillos-last', 'PlatilloController@lastRecipes'); // ultimos platillos cocinados por el usuario
+        Route::post('platillos-ai', 'PlatilloController@ai'); // busqueda de recetas para el usuario
+        Route::post('platillos-history', 'PlatilloController@history'); // recetas cocinadas por el usuario
+        Route::post('get-enfermedades', 'ClasificacionController@getEnfermedades');
+        Route::post('get-gustos', 'ClasificacionController@getGustos');
+        
+
         Route::resource('ingredientes', 'IngredienteController');
+        Route::post('user-ingredientes-save', 'IngredienteController@saveUser');
         Route::resource('clasificaciones', 'ClasificacionController');
         // custom functions
     });

@@ -12,7 +12,7 @@ class Platillo extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'descripcion', 'preparacion','porcion,','porcion_tipo','instrucciones'
+        'nombre', 'descripcion', 'preparacion','porcion','porcion_tipo','instrucciones', 'url_image'
     ];
 
     /**

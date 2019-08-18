@@ -19,6 +19,10 @@ Route::get('/web/auth/login', 'AdministradorController@showLogin')->name('login'
 Route::post('/web/auth/login_post', 'AdministradorController@clienLogin')->name('login_post');
 /* Custom urls web */
 Route::resource('administrador', 'AdministradorController')->middleware('auth');
+Route::get('create-recipe', 'AdministradorController@createRecipe');
+Route::post('platillo/store','PlatilloController@store')->name('admin-platillo.store');
+Route::get('create-classification', 'AdministradorController@createClassification');
+Route::post('clasificacion/store','ClasificacionController@store')->name('admin-clasificacion.store');
 
 /* For datatables */
 Route::get('list-ingredientes', 'AdministradorController@dataIngredientes')->name('datatable.ingredientes');

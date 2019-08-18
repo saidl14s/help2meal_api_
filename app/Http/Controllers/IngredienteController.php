@@ -46,6 +46,10 @@ class IngredienteController extends Controller
         ],201);
     }
 
+    public function saveUser(Request $request){
+        return $request;
+    }
+
     /**
      * Display the specified resource.
      *

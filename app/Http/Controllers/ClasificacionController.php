@@ -61,6 +61,14 @@ class ClasificacionController extends Controller
                 Clasificacion::find($id)->ingredientes, 200);
     }
 
+    public function getEnfermedades(){
+        return Clasificacion::where('tipo','enfermedad')->get();
+    }
+
+    public function getGustos(){
+        return Clasificacion::where('tipo','preferencia')->get();
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

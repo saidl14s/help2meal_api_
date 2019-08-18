@@ -105,6 +105,19 @@ class AdministradorController extends Controller
         }
     }
 
+    public function createRecipe(){
+        return view('platillo.platillo-crear',[
+            'ingredientes' => Ingrediente::all(),
+            'enfermedades' => Clasificacion::where('tipo','enfermedad')->get(),
+            'tiempos_comida' => Clasificacion::where('tipo','tiempo')->get(),
+        ]);
+    }
+    
+    public function createClassification(){
+        return view('clasificacion.clasificacion-crear');
+    }
+    
+
     /* Custom methods for datatable*/
     public function dataIngredientes()
     {
