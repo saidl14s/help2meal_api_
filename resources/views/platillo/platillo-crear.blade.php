@@ -9,6 +9,9 @@ fieldset{
     margin-top: 10px;
     margin-bottom: 20px;
 }
+h2 span{
+    font-size: 18px;
+}
 </style>
     <h1>Platillo</h1>
     <form action="{{route('admin-platillo.store')}}" id="recipe-form" method="POST">
@@ -63,16 +66,18 @@ fieldset{
         <div class="row">
             @foreach ($ingredientes as $ingrediente)
                 <div class="col">
+                    <input type="number" name="ingrendientes[{{ $ingrediente->id }}]" value="0" id="c_ingrediente-{{ $ingrediente->id }}">
                     <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" name="ingrendientes[]" value="{{ $ingrediente->id }}" id="ingrediente-{{ $ingrediente->id }}">
-                        <label class="form-check-label" for="ingrediente-{{ $ingrediente->id }}">{{ $ingrediente->nombre }}</label>
+                            {{ $ingrediente->nombre }}
+                        <!--<input type="checkbox" class="form-check-input" name="ingrendientes[]" value="{{ $ingrediente->id }}" id="ingrediente-{{ $ingrediente->id }}">
+                        <label class="form-check-label" for="ingrediente-{{ $ingrediente->id }}">{{ $ingrediente->nombre }}</label>-->
                     </div>        
                 </div>
             @endforeach
         </div>
         <div class="row">
             <div class="col">
-                <h2>Prohibir</h2>
+                <h2>Prohibir <span> a personas con:</span></h2>
             </div>
         </div>
         <div class="row">

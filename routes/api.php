@@ -39,6 +39,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('platillos-history', 'PlatilloController@history'); // recetas cocinadas por el usuario
         Route::post('get-enfermedades', 'ClasificacionController@getEnfermedades');
         Route::post('get-gustos', 'ClasificacionController@getGustos');
+        Route::get('get-ingredients-recipe/{id}', 'PlatilloController@getIngredientRecipe');
         
 
         Route::resource('ingredientes', 'IngredienteController');

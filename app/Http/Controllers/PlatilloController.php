@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+
 use \App\Platillo;
+use \App\PlatilloIngrediente;
+use \App\Ingrediente;
 
 class PlatilloController extends Controller
 {
@@ -26,6 +30,9 @@ class PlatilloController extends Controller
     public function create()
     {
         //
+        return response()->json([
+            'message'      => 'Service temporarily unavailable'
+        ],503);
     }
 
     /**
@@ -36,7 +43,6 @@ class PlatilloController extends Controller
      */
     public function store(Request $request)
     {
-        $ingredientes = $request->input('ingrendientes');
 
         $instruccion_images = $request->input('url_instrucction');
         $instruccion_content = $request->input('content_instrucction');
@@ -52,13 +58,24 @@ class PlatilloController extends Controller
             'preparacion' => $request->input('preparacion'),
             'porcion' => $request->input('porcion'),
             'porcion_tipo' => $request->input('porcion_tipo'),
-            //'tipo_recomendacion' => $request->input('tipo_recomendacion'), 
+            'tipo_recomendacion' => $request->input('tipo_recomendacion'), 
             'instrucciones'=> $instrucciones
         ]);
+        
+        $ingredientes = $request->input('ingrendientes');
+        foreach($ingredientes as $id_ingrediente => $cantidad) {
+            if($cantidad > 0){
+                PlatilloIngrediente::create([
+                    'ingrediente_id' => $id_ingrediente,
+                    'platillo_id' => $recipe->id,
+                    'cantidad' => $cantidad
+                ]);
+            }
+            
+        }
         return response()->json([
             'message'      => 'Successfully created recipe'
         ],201);
-        //return $request;
     }
 
     public function lastRecipes(Request $request){
@@ -74,14 +91,36 @@ class PlatilloController extends Controller
     }
 
     public function ai(Request $request){
-        return [
-            [ 'id'=>'2', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'4', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
+        $all_recipes = array();
+        $recipes = Platillo::where('tipo_recomendacion', $request->input('tipo_recomendacion'))->get();
+        foreach($recipes as $recipe){
+            $ingredients = PlatilloIngrediente::where('platillo_id', $recipe->id )->get();
+            $info_ingredient = array();
+            $all_ingredients = array();
+            foreach($ingredients as $ingredient){
+                $ing = Ingrediente::find($ingredient->ingrediente_id);
+                $count = $ingredient->cantidad;
+                $info_ingredient = Arr::add($ing, 'cantidad', $count);
+                $all_ingredients[]=$info_ingredient;
+                //$array = Arr::add($recipe, 'ingredients',$info_ingredient);
+            }
+            $array = Arr::add($recipe, 'ingredients',$all_ingredients);
+            $all_recipes[]= $array;
+        }
+        return $all_recipes;
+        
+        
+        //$ingredients = PlatilloIngrediente::where('platillo_id', $request->input('tipo_recomendacion'))->get();
+        //return $recipes;
+    
+        /*return [
+            [ 'id'=>'5', 'nombre' => 'Chilitos rellenos', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
+            [ 'id'=>'3', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
             [ 'id'=>'1', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
             [ 'id'=>'3', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
             [ 'id'=>'5', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
             [ 'id'=>'6', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-        ];
+        ];*/
         
     }
 
@@ -106,6 +145,37 @@ class PlatilloController extends Controller
     {
         //
         return Platillo::find($id);
+        /*$recipe = Platillo::find($id);
+        $ingredients = PlatilloIngrediente::where('platillo_id', $recipe->id )->get();
+        $info_ingredient = array();
+        $all_ingredients = array();
+        foreach($ingredients as $ingredient){
+            $ing = Ingrediente::find($ingredient->ingrediente_id);
+            $count = $ingredient->cantidad;
+            $info_ingredient = Arr::add($ing, 'cantidad', $count);
+            $all_ingredients[]=$info_ingredient;
+            //$array = Arr::add($recipe, 'ingredients',$info_ingredient);
+        }
+        $array = Arr::add($recipe, 'ingredients',$all_ingredients);
+        return $array;*/
+    }
+    public function getIngredientRecipe($id)
+    {
+        //
+        //return Platillo::find($id);
+        $recipe = Platillo::find($id);
+        $ingredients = PlatilloIngrediente::where('platillo_id', $recipe->id )->get();
+        $info_ingredient = array();
+        $all_ingredients = array();
+        foreach($ingredients as $ingredient){
+            $ing = Ingrediente::find($ingredient->ingrediente_id);
+            $count = $ingredient->cantidad;
+            $info_ingredient = Arr::add($ing, 'cantidad', $count);
+            $all_ingredients[]=$info_ingredient;
+            //$array = Arr::add($recipe, 'ingredients',$info_ingredient);
+        }
+        $array = Arr::add($recipe, 'ingredients',$all_ingredients);
+        return $all_ingredients;
     }
 
     /**
