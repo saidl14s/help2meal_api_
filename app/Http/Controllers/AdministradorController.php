@@ -116,6 +116,22 @@ class AdministradorController extends Controller
     public function createClassification(){
         return view('clasificacion.clasificacion-crear');
     }
+
+    public function createIngredient(){
+        return view('ingrediente.ingrediente-crear', [
+            'clasificaciones' => Clasificacion::where('tipo','ingrediente')->get()
+        ]);
+    }
+
+    public function storeIngredient(Request $request)
+    {
+        //
+        Ingrediente::create($request->all());
+        return response()->json([
+            'message'      => 'Successfully created ingredient'
+        ],201);
+    }
+    
     
 
     /* Custom methods for datatable*/

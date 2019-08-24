@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePlatilloEnfermedadsTable extends Migration
+class CreatePlatilloUsuariosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreatePlatilloEnfermedadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('platillo_enfermedads', function (Blueprint $table) {
+        Schema::create('platillo_usuarios', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('enfermedad_id');
             $table->unsignedBigInteger('platillo_id');
-            $table->foreign('enfermedad_id')->references('id')->on('clasificacions');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('platillo_id')->references('id')->on('platillos');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreatePlatilloEnfermedadsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('platillo_enfermedads');
+        Schema::dropIfExists('platillo_usuarios');
     }
 }

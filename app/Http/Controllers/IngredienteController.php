@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \App\Ingrediente;
 use \App\Clasificacion;
+use \App\User;
+use \App\UsuarioIngrediente;
+use \App\PlatilloUsuario;
 
 class IngredienteController extends Controller
 {
@@ -13,11 +17,32 @@ class IngredienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(){
+        return Ingrediente::all();
+    }
+    
+    public function indexInventary(Request $request)
     {
         //
-        //return Ingrediente::where('visible', 1)->get();
-        return Ingrediente::all();
+        $ingredients = array();
+        $ingredients_db = Ingrediente::all();
+        foreach ($ingredients_db as $ingredient_db) {
+            //$ingredient_db->id;
+            try{
+                $ingredient_user = UsuarioIngrediente::where([
+                    ['ingrediente_id', '=', $ingredient_db->id],
+                    ['user_id', '=', $request->user()->id]
+                ])->firstOrFail();
+                $ingredient_db->cantidad = $ingredient_user->cantidad;    
+            }catch(ModelNotFoundException $e){
+                $ingredient_db->cantidad = 0;
+            }
+            $ingredients[] = $ingredient_db;
+        }
+        
+        return $ingredients;
+        
+        //return Ingrediente::all();
     }
 
     /**
@@ -47,7 +72,66 @@ class IngredienteController extends Controller
     }
 
     public function saveUser(Request $request){
-        return $request;
+        try{
+            $ingredient_exist = UsuarioIngrediente::where([
+                ['ingrediente_id', '=', $request->input('ingrediente_id')],
+                ['user_id', '=', $request->user()->id]
+            ])->firstOrFail();
+            if($request->input('cantidad') == 0){
+                $ingredient_exist->delete();
+                return response()->json([
+                    'message'      => 'Successfully deleted registry'
+                ],201);
+            }else{
+                $ingredient_exist->cantidad = $request->input('cantidad');
+                $ingredient_exist->save();
+
+                return response()->json([
+                    'message'      => 'Successfully update registry'
+                ],201);
+            }
+        }catch(ModelNotFoundException $e){
+            UsuarioIngrediente::create([
+                'ingrediente_id' => $request->input('ingrediente_id'),
+                'user_id' => $request->user()->id,
+                'cantidad' => $request->input('cantidad'),
+            ]);
+            return response()->json([
+                'message'      => 'Successfully create registry'
+            ],201);
+        }
+        
+        //return $exist;
+    }
+
+    public function updateUser(Request $request){
+        try{
+            $ingredient_exist = UsuarioIngrediente::where([
+                ['ingrediente_id', '=', $request->input('ingrediente_id')],
+                ['user_id', '=', $request->user()->id]
+            ])->firstOrFail();
+            if( $request->input('cantidad') < $ingredient_exist->cantidad){
+                $ingredient_exist->cantidad = $ingredient_exist->cantidad - $request->input('cantidad');
+                $ingredient_exist->save();
+            }else{
+                //$ingredient_exist->cantidad = 0;
+                $ingredient_exist->delete();
+            }
+        }catch(ModelNotFoundException $e){}
+        try{
+            $recipe_exist = PlatilloUsuario::where([
+                ['platillo_id', '=', $request->input('platillo_id')],
+                ['user_id', '=', $request->user()->id]
+            ])->firstOrFail();
+        }catch(ModelNotFoundException $e){
+            $recipe = PlatilloUsuario::create([
+                'platillo_id' => $request->input('platillo_id'),
+                'user_id' => $request->user()->id,
+            ]);
+        }
+
+        
+        
     }
 
     /**

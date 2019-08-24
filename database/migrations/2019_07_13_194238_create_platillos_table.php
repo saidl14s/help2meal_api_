@@ -20,7 +20,7 @@ class CreatePlatillosTable extends Migration
             $table->integer('preparacion');
             $table->integer('porcion');
             $table->set('porcion_tipo', ['pieza','persona']);
-            $table->json('instrucciones');
+            $table->text('instrucciones');
             $table->timestamps();
         });
     }

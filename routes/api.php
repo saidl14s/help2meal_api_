@@ -40,11 +40,19 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('get-enfermedades', 'ClasificacionController@getEnfermedades');
         Route::post('get-gustos', 'ClasificacionController@getGustos');
         Route::get('get-ingredients-recipe/{id}', 'PlatilloController@getIngredientRecipe');
+        Route::get('clasificaciones-ingredientes', 'ClasificacionController@showIngredientes');
         
 
         Route::resource('ingredientes', 'IngredienteController');
+        Route::get('ingredientes-get', 'IngredienteController@indexInventary');
+        Route::get('enfermedades-get', 'ClasificacionController@indexPreferencesUser');
+        Route::get('gustos-get', 'ClasificacionController@indexGustosUser');
         Route::post('user-ingredientes-save', 'IngredienteController@saveUser');
+        Route::post('user-gustos-save', 'ClasificacionController@saveGustosUser'); //pending
+        Route::post('user-enfermedades-save', 'ClasificacionController@saveEnfermedadesUser'); //pending
         Route::resource('clasificaciones', 'ClasificacionController');
+        Route::post('ingredientes-user-update', 'IngredienteController@updateUser');
+        Route::get('new-recipes', 'PlatilloController@newsRecipes');
         // custom functions
     });
 });

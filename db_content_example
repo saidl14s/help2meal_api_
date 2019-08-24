@@ -1,0 +1,32 @@
+INSERT INTO `clasificacions` (`id`, `nombre`, `tipo`, `visible`, `created_at`, `updated_at`) VALUES
+(1, 'Arroces, pastas, legumbres', 'ingrediente', 1, '2019-07-14 07:34:15', '2019-07-14 07:34:15'),
+(2, 'Aperitivos', 'ingrediente', 1, '2019-07-19 03:58:55', '2019-07-19 03:58:55'),
+(3, 'Especias y hierbas', 'ingrediente', 1, '2019-07-19 04:00:52', '2019-07-19 04:00:52'),
+(4, 'Aceites Vinagres', 'ingrediente', 1, '2019-07-19 04:01:00', '2019-07-19 04:01:00'),
+(5, 'Las Salsas', 'ingrediente', 1, '2019-07-19 04:01:15', '2019-07-19 04:01:15'),
+(6, 'Conservas y deshidratados', 'ingrediente', 1, '2019-07-19 04:01:26', '2019-07-19 04:01:26'),
+(7, 'Bebidas', 'ingrediente', 1, '2019-07-19 04:01:32', '2019-07-19 04:01:32'),
+(8, 'Aditivos', 'ingrediente', 1, '2019-07-19 04:01:38', '2019-07-19 04:01:38'),
+(9, 'Preparados', 'ingrediente', 1, '2019-07-19 04:01:54', '2019-07-19 04:01:54'),
+(10, 'Sales y azúcares', 'ingrediente', 1, '2019-07-19 04:02:02', '2019-07-19 04:02:02'),
+(11, 'Proteinas', 'ingrediente', 1, '2019-07-19 04:02:09', '2019-07-19 04:02:09'),
+(13, 'Setas y verduras', 'ingrediente', 1, '2019-07-19 04:02:17', '2019-07-19 04:02:17'),
+(14, 'Frutas', 'ingrediente', 1, '2019-07-19 04:02:23', '2019-07-19 04:02:23'),
+(15, 'Diabetes', 'enfermedad', 1, '2019-08-17 22:21:48', '2019-08-17 22:21:48'),
+(16, 'Comida', 'tiempo', 1, '2019-08-17 22:29:32', '2019-08-17 22:29:32'),
+(17, 'Desayuno', 'tiempo', 1, '2019-08-17 22:29:36', '2019-08-17 22:29:36'),
+(18, 'Cena', 'tiempo', 1, '2019-08-17 22:29:40', '2019-08-17 22:29:40'),
+(19, 'Hipertensión', 'enfermedad', 1, '2019-08-18 08:55:03', '2019-08-18 08:55:03'),
+(20, 'Vegetariana', 'preferencia', 1, '2019-08-18 09:03:03', '2019-08-18 09:03:03'),
+(21, 'Vegana', 'preferencia', 1, '2019-08-18 09:03:08', '2019-08-18 09:03:08'),
+(22, 'Crudivegana', 'preferencia', 1, '2019-08-18 09:03:16', '2019-08-18 09:03:16');
+
+
+
+INSERT INTO `ingredientes` (`id`, `nombre`, `unidad`, `caducidad`, `created_at`, `updated_at`, `clasificacion_id`, `url_imagen`) VALUES
+(1, 'Arroz japonés para sushi', 'kilogramo', 1000, '2019-07-14 07:35:00', '2019-07-14 07:35:00', 1, 'https://cocinista-vsf.netdna-ssl.com/download/bancorecursos/productos/10870-%20Arros%20sushi.jpg'),
+(2, 'Arroz basmati inflado', 'gramo', 200, '2019-07-14 23:49:29', '2019-07-14 23:49:29', 1, 'https://cocinista-vsf.netdna-ssl.com/download/bancorecursos/Productos5/10716a-arroz-inflado-natco.jpg'),
+(3, 'Maltodextrina', 'mililitro', 10000, '2019-07-17 08:45:59', '2019-07-17 08:45:59', 8, 'https://cocinista-vsf.netdna-ssl.com/download/bancorecursos/productos4/12420-maltodrextina-110g-laguilhoat.jpg'),
+(4, 'Concentrado de Limón en pasta', 'gramo', 10000, '2019-07-18 10:21:49', '2019-07-18 10:21:49', 8, 'https://cocinista-vsf.netdna-ssl.com/download/bancorecursos/Productos6/16042b-concentrado-de-limon-en-pasta-chefdelice-50g.jpg'),
+(5, 'Aroma concentrado de Algodón de azucar', 'mililitro', 10000, '2019-07-18 10:23:02', '2019-07-18 10:23:02', 10, 'https://cocinista-vsf.netdna-ssl.com/download/bancorecursos/productos2/16039a-aroma-concentrado-de-algodon-de-azucar.jpg'),
+(6, 'Aceite de almendras', 'mililitro', 10000, '2019-07-18 10:24:11', '2019-07-18 10:24:11', 4, 'https://cocinista-vsf.netdna-ssl.com/download/bancorecursos/ingredientes/ingrediente_aceite_almendras.jpg');

@@ -12,7 +12,13 @@ fieldset{
 h2 span{
     font-size: 18px;
 }
+span .unidad{
+    color:cadetblue;
+    font-style: italic
+}
 </style>
+ <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+ <script>tinymce.init({selector:'textarea#instruccion_s'});</script>
     <h1>Platillo</h1>
     <form action="{{route('admin-platillo.store')}}" id="recipe-form" method="POST">
         @csrf
@@ -53,10 +59,7 @@ h2 span{
         </div>
         <div class="form-group">
             <label for="">Instrucciones</label>
-            <button type="button" onclick="addInstruccion()">+</button>
-            <div id="container_instrucciones">
-
-            </div>
+            <textarea name="instrucciones" id="instruccion_s"></textarea>
         </div>
         <div class="row">
             <div class="col">
@@ -68,7 +71,7 @@ h2 span{
                 <div class="col">
                     <input type="number" name="ingrendientes[{{ $ingrediente->id }}]" value="0" id="c_ingrediente-{{ $ingrediente->id }}">
                     <div class="form-group form-check">
-                            {{ $ingrediente->nombre }}
+                            {{ $ingrediente->nombre }} <br> <span class="unidad"> {{ $ingrediente->unidad }}</span>
                         <!--<input type="checkbox" class="form-check-input" name="ingrendientes[]" value="{{ $ingrediente->id }}" id="ingrediente-{{ $ingrediente->id }}">
                         <label class="form-check-label" for="ingrediente-{{ $ingrediente->id }}">{{ $ingrediente->nombre }}</label>-->
                     </div>        
@@ -93,38 +96,4 @@ h2 span{
         <br>
         <button type="submit" class="btn btn-success">Guardar</button>
     </form>
-
-    <script>
-        var item_instruction = "<fieldset><input type='text' class='form-control' name='url_instrucction[]'  placeholder='https://www.pexels.com/photo/green-petaled-flower-2395250/'><textarea class='form-control' name='content_instrucction[]' rows='4'></textarea></fieldset>";
-        function addInstruccion(){
-            document.getElementById("container_instrucciones").innerHTML += item_instruction;
-        }
-
-        /*function prepareJSONinstructions(){
-            var json_instructions ;
-
-            var steps_images = document.forms['recipe-form'].elements[ 'url_instrucction[]' ];
-            var steps_content = document.forms['recipe-form'].elements[ 'content_instrucction[]' ];
-
-            if( steps_images.length ==  steps_content.length){
-                for (var i=0; i < steps_images.length; i++) {
-                    var instrucction = new Object();
-                    instrucction.step = i+1;
-                    instrucction.content = steps_content[i].value;
-                    instrucction.url_image = steps_images[i].value;
-
-                    json_instructions += JSON.stringify(instrucction);
-                }
-
-                //document.getElementById("instructions_json").value = ""+json_instructions;
-                
-                sendForm();
-            }
-            
-        }
-
-        function sendForm(){
-            document.getElementById("recipe-form").submit();
-        }*/
-    </script>
 @endsection

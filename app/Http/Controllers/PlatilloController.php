@@ -7,7 +7,9 @@ use Illuminate\Support\Arr;
 
 use \App\Platillo;
 use \App\PlatilloIngrediente;
+use \App\PlatilloEnfermedad;
 use \App\Ingrediente;
+use \App\PlatilloUsuario;
 
 class PlatilloController extends Controller
 {
@@ -43,13 +45,6 @@ class PlatilloController extends Controller
      */
     public function store(Request $request)
     {
-
-        $instruccion_images = $request->input('url_instrucction');
-        $instruccion_content = $request->input('content_instrucction');
-        
-        $instrucciones = array($instruccion_images,$instruccion_content );
-        $instrucciones = json_encode($instrucciones);
-
         //'nombre', 'descripcion', 'preparacion','porcion,','porcion_tipo','instrucciones'
         $recipe = Platillo::create([
             'url_image' => $request->input('url_image'),
@@ -59,7 +54,7 @@ class PlatilloController extends Controller
             'porcion' => $request->input('porcion'),
             'porcion_tipo' => $request->input('porcion_tipo'),
             'tipo_recomendacion' => $request->input('tipo_recomendacion'), 
-            'instrucciones'=> $instrucciones
+            'instrucciones'=> $request->input('instrucciones')
         ]);
         
         $ingredientes = $request->input('ingrendientes');
@@ -73,21 +68,37 @@ class PlatilloController extends Controller
             }
             
         }
+
+        $enfermedades = $request->input('enfermedades');
+        foreach ($enfermedades as $enfermedad) {
+            PlatilloEnfermedad::create([
+                'enfermedad_id' => $enfermedad,
+                'platillo_id' => $recipe->id
+            ]);
+        }
+        
         return response()->json([
             'message'      => 'Successfully created recipe'
         ],201);
+        
+        
     }
 
     public function lastRecipes(Request $request){
-       // return $request;
-       return [
-            [ 'id'=>'2', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'4', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'1', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'3', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'5', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'6', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-        ];
+        // return $request;
+        $results = array();
+
+        $results_db = PlatilloUsuario::where('user_id', $request->user()->id)->get();
+        foreach ($results_db as $result) {
+            $recipe = Platillo::find($result->id);
+            $new_recipe = [
+                'id' => $recipe->id,
+                'url_image' => $recipe->url_image
+            ];
+            $results[] = $new_recipe;
+        }
+       
+        return $results;
     }
 
     public function ai(Request $request){
@@ -109,30 +120,47 @@ class PlatilloController extends Controller
         }
         return $all_recipes;
         
-        
-        //$ingredients = PlatilloIngrediente::where('platillo_id', $request->input('tipo_recomendacion'))->get();
-        //return $recipes;
-    
-        /*return [
-            [ 'id'=>'5', 'nombre' => 'Chilitos rellenos', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'3', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'1', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'3', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'5', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'6', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-        ];*/
-        
     }
 
-    public function history(){
-        return [
-            [ 'id'=>'2', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'4', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'1', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'3', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'5', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-            [ 'id'=>'6', 'nombre' => 'Arroz', 'descripcion' => 'lorem', 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
-        ];
+    public function newsRecipes(){
+
+        /*return [
+                [ 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
+                [ 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
+                [ 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
+                [ 'url_image'=>'https://images.pexels.com/photos/1860207/pexels-photo-1860207.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'],
+            ];*/
+        $new_recipes = array();
+
+        $results_db = Platillo::orderBy('id', 'desc')->take(4)->get();
+        foreach ($results_db as $result) {
+            $new_recipe = [
+                'url_image' => $result->url_image
+            ];
+            $new_recipes[] = $new_recipe;
+        }
+        
+        return $new_recipes;
+        
+    }
+    public function history(Request $request){
+        
+        $results = array();
+
+        $results_db = PlatilloUsuario::where('user_id', $request->user()->id)->get();
+        foreach ($results_db as $result) {
+            $recipe = Platillo::find($result->id);
+            $new_recipe = [
+                'id' => $recipe->id,
+                'nombre'=>$recipe->nombre,
+                'descripcion'=>$recipe->descripcion,
+                'descripcion'=>$recipe->descripcion,
+                'url_image' => $recipe->url_image
+            ];
+            $results[] = $new_recipe;
+        }
+       
+        return $results;
     }
 
     /**
