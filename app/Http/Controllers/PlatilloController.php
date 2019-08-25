@@ -99,7 +99,7 @@ class PlatilloController extends Controller
         // return $request;
         $results = array();
 
-        $results_db = PlatilloUsuario::where('user_id', $request->user()->id)->get();
+        $results_db = PlatilloUsuario::where('user_id', $request->user()->id)->take(6)->get();
         foreach ($results_db as $result) {
             $recipe = Platillo::find($result->id);
             $new_recipe = [
