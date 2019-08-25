@@ -16,7 +16,7 @@ class CreateIngredientesTable extends Migration
         Schema::create('ingredientes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('nombre');
-            $table->set('unidad', ['centimetro', 'litro','mililitro','kilogramo','gramo','miligramo','taza','cucharada','pieza']);
+            $table->set('unidad', ['centimetro', 'litro','mililitro','kilogramo','gramo','miligramo','taza','cucharada','pieza','racimo']);
             $table->integer('caducidad');
             $table->timestamps();
         });

@@ -20,12 +20,14 @@
             <select class="form-control" name="unidad" id="">
                 <option value="centimetro">Centimetro</option>
                 <option value="litro">Litro</option>
+                <option value="mililitro">Mililitro</option>
                 <option value="kilogramo">Kilogramo</option>
                 <option value="gramo">Gramo</option>
                 <option value="miligramo">Miligramo</option>
                 <option value="taza">Taza</option>
                 <option value="cucharada">Cucharada</option>
                 <option value="pieza">Pieza</option>
+                <option value="racimo">Racimo</option>
             </select>
         </div>
         <div class="form-group">
