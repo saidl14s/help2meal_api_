@@ -12,6 +12,6 @@ class PlatilloEnfermedad extends Model
      * @var array
      */
     protected $fillable = [
-        'clasificacion_id', 'platillo_id'
+        'enfermedad_id', 'platillo_id'
     ];
 }
