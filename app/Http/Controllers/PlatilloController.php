@@ -47,7 +47,7 @@ class PlatilloController extends Controller
     public function store(Request $request)
     {
         //'nombre', 'descripcion', 'preparacion','porcion,','porcion_tipo','instrucciones'
-        /*$recipe = Platillo::create([
+        $recipe = Platillo::create([
             'url_image' => $request->input('url_image'),
             'nombre' => $request->input('nombre'),
             'descripcion'=> $request->input('descripcion'),
@@ -68,14 +68,13 @@ class PlatilloController extends Controller
                 ]);
             }
             
-        }*/
-
+        }
 
         $enfermedades_receive = $request->input('enfermedades');
         foreach ($enfermedades_receive as $enfermedad ) {
             PlatilloEnfermedad::create([
                 'enfermedad_id' => $enfermedad,
-                'platillo_id' => 6//$recipe->id
+                'platillo_id' => $recipe->id
             ]);
         }
 
@@ -83,23 +82,13 @@ class PlatilloController extends Controller
         foreach ($preferencias as $preferencia ) {
             PlatilloGusto::create([
                 'gusto_id' => $preferencia,
-                'platillo_id' => 6// $recipe->id
-            ]);
-        }
-        
-
-        /*$preferencias = $request->input('preferencias');
-        foreach ($preferencias as $id_preferencia => $val) {
-            PlatilloGusto::create([
-                'gusto_id' => $id_preferencia,
                 'platillo_id' => $recipe->id
             ]);
         }
         
         return response()->json([
             'message'      => 'Successfully created recipe'
-        ],201);*/
-        
+        ],201);   
         
     }
 
