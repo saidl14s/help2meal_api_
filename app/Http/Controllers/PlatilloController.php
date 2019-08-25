@@ -72,17 +72,17 @@ class PlatilloController extends Controller
 
 
         $enfermedades = $request->input('enfermedades');
-        foreach ($enfermedades as $enfermedad) {
+        foreach ($enfermedades as $id_enfermedad => $val) {
             PlatilloEnfermedad::create([
-                'enfermedad_id' => $enfermedad->id,
+                'enfermedad_id' => $id_enfermedad,
                 'platillo_id' => $recipe->id
             ]);
         }
 
         $preferencias = $request->input('preferencias');
-        foreach ($preferencias as $preferencia) {
+        foreach ($preferencias as $id_preferencia => $val) {
             PlatilloGusto::create([
-                'gusto_id' => $preferencia->id,
+                'gusto_id' => $id_preferencia,
                 'platillo_id' => $recipe->id
             ]);
         }
