@@ -110,6 +110,7 @@ class AdministradorController extends Controller
             'ingredientes' => Ingrediente::all(),
             'enfermedades' => Clasificacion::where('tipo','enfermedad')->get(),
             'tiempos_comida' => Clasificacion::where('tipo','tiempo')->get(),
+            'preferencias' => Clasificacion::where('tipo','preferencia')->get(),
         ]);
     }
     

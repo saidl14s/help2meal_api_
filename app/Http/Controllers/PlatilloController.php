@@ -10,6 +10,7 @@ use \App\PlatilloIngrediente;
 use \App\PlatilloEnfermedad;
 use \App\Ingrediente;
 use \App\PlatilloUsuario;
+use \App\PlatilloGusto;
 
 class PlatilloController extends Controller
 {
@@ -69,10 +70,19 @@ class PlatilloController extends Controller
             
         }
 
+
         $enfermedades = $request->input('enfermedades');
         foreach ($enfermedades as $enfermedad) {
             PlatilloEnfermedad::create([
-                'enfermedad_id' => $enfermedad,
+                'enfermedad_id' => $enfermedad->id,
+                'platillo_id' => $recipe->id
+            ]);
+        }
+
+        $preferencias = $request->input('preferencias');
+        foreach ($preferencias as $preferencia) {
+            PlatilloGusto::create([
+                'gusto_id' => $preferencia->id,
                 'platillo_id' => $recipe->id
             ]);
         }

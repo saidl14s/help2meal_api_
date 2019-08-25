@@ -93,6 +93,21 @@ span .unidad{
                 </div>
             @endforeach
         </div>
+        <div class="row">
+            <div class="col">
+                <h2>Mostrar <span> a personas con gusto:</span></h2>
+            </div>
+        </div>
+        <div class="row">
+            @foreach ($preferencias as $preferencia)
+                <div class="col">
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" name="preferencias[]" value="{{ $preferencia->id }}" id="preferencia-{{ $preferencia->id }}">
+                        <label class="form-check-label" for="preferencia-{{ $preferencia->id }}">{{ $preferencia->nombre }}</label>
+                    </div>        
+                </div>
+            @endforeach
+        </div>
         <br>
         <button type="submit" class="btn btn-success">Guardar</button>
     </form>
