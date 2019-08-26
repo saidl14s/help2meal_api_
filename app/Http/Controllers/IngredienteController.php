@@ -79,7 +79,11 @@ class IngredienteController extends Controller
             return response()->json([
                 'message'      => 'Successfully created ingredient'
             ],201);
-        }catch(ModelNotFoundException $e){}
+        }catch(ModelNotFoundException $e){
+            return response()->json([
+                'message'      => 'Error'
+            ],500);   
+        }
         
         
     }
