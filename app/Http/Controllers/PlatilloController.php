@@ -14,6 +14,7 @@ use \App\PlatilloGusto;
 use \App\User;
 use \App\UsuarioEnfermedad;
 use \App\UsuarioGusto;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PlatilloController extends Controller
 {
@@ -215,7 +216,7 @@ class PlatilloController extends Controller
     }
 
     public function updateUser(Request $request){
-        /*try{
+        try{
             $recipe_exist = PlatilloUsuario::where([
                 ['platillo_id', '=', $request->input('platillo_id')],
                 ['user_id', '=', $request->user()->id]
@@ -231,8 +232,8 @@ class PlatilloController extends Controller
             return response()->json([
                 'message'      => 'Case 2'
             ], 200); 
-        }*/
-        return $request;
+        }
+        
     }
     /**
      * Display the specified resource.
