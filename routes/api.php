@@ -56,6 +56,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('ingredientes-user-update', 'IngredienteController@updateUser');
         Route::post('platillo-user-update', 'PlatilloController@updateUser');
         Route::get('new-recipes', 'PlatilloController@newsRecipes');
+        Route::get('get-ingredientes-clasificaciones', 'IngredienteController@getIngredientClasificacions');
         // custom functions
     });
 });

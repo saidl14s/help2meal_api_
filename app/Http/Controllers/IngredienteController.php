@@ -65,10 +65,23 @@ class IngredienteController extends Controller
     public function store(Request $request)
     {
         //
-        Ingrediente::create($request->all());
-        return response()->json([
-            'message'      => 'Successfully created ingredient'
-        ],201);
+        try{
+            $clasificacion = Clasificacion::where([
+                ['nombre', '=', $request->input('clasificacion')],
+            ])->firstOrFail();
+            Ingrediente::create([
+                'nombre' => $request->input('nombre'),
+                'unidad' => $request->input('unidad'),
+                'caducidad' => $request->input('caducidad'),
+                'clasificacion_id' => $clasificacion->id,
+                'url_imagen' => $request->input('url_imagen'),
+            ]);
+            return response()->json([
+                'message'      => 'Successfully created ingredient'
+            ],201);
+        }catch(ModelNotFoundException $e){}
+        
+        
     }
 
     public function saveUser(Request $request){
@@ -119,6 +132,19 @@ class IngredienteController extends Controller
             }
         }catch(ModelNotFoundException $e){}
    
+    }
+
+    public function getIngredientClasificacions(){
+        $clasificaciones = array();
+        $clasificaciones_db = Clasificacion::where('tipo','ingrediente')->get();
+        foreach ($clasificaciones_db as $clasificacion_db) {
+            $pre_ = [
+                'id' => $clasificacion_db->id,
+                'nombre' =>$clasificacion_db->nombre,
+            ];
+            $clasificaciones[] = $pre_;
+        }
+        return $clasificaciones;
     }
 
     /**
