@@ -202,7 +202,7 @@ class PlatilloController extends Controller
         foreach ($results_db as $result) {
             $recipe = Platillo::find($result->id);
             $new_recipe = [
-                'id' => $recipe->id,
+                //'id' => $recipe->id,
                 'nombre'=>$recipe->nombre,
                 'descripcion'=>$recipe->descripcion,
                 'descripcion'=>$recipe->descripcion,
