@@ -220,11 +220,17 @@ class PlatilloController extends Controller
                 ['platillo_id', '=', $request->input('platillo_id')],
                 ['user_id', '=', $request->user()->id]
             ])->firstOrFail();
+            return response()->json([
+                'message'      => 'Case 1'
+            ], 200); 
         }catch(ModelNotFoundException $e){
             $recipe = PlatilloUsuario::create([
                 'platillo_id' => $request->input('platillo_id'),
                 'user_id' => $request->user()->id,
             ]);
+            return response()->json([
+                'message'      => 'Case 2'
+            ], 200); 
         }
     }
     /**
