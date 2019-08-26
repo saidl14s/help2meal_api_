@@ -200,15 +200,15 @@ class PlatilloController extends Controller
 
         $results_db = PlatilloUsuario::where('user_id', $request->user()->id)->get();
         foreach ($results_db as $result) {
-            $recipe = Platillo::find($result->id);
+            $recipe = Platillo::find($result->platillo_id);
             $new_recipe = [
-                'id' =>1,// $recipe->id,
-                'nombre'=> 2,//$recipe->nombre,
-                'descripcion' => 3,//$recipe->descripcion,
-                'descripcion'=> 5,//$recipe->descripcion,
-                'url_image' => 7,//$recipe->url_image
+                'id' => $recipe->id,
+                'nombre'=> $recipe->nombre,
+                'descripcion' => $recipe->descripcion,
+                'descripcion'=> $recipe->descripcion,
+                'url_image' => $recipe->url_image
             ];
-            $results[] = $recipe;//$new_recipe;
+            $results[] = $new_recipe;
         }
        
         return $results;
