@@ -27,6 +27,9 @@ Route::group(['prefix' => 'auth'], function () {
     // Whitout autentication
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
+    /* FOR SECURITY */
+    Route::post('checkToken', 'AuthController@checkToken'); 
+    /*  */
   
     Route::group(['middleware' => 'auth:api'], function() {
         // Whith autentication
@@ -41,11 +44,6 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('get-gustos', 'ClasificacionController@getGustos');
         Route::get('get-ingredients-recipe/{id}', 'PlatilloController@getIngredientRecipe');
         Route::get('clasificaciones-ingredientes', 'ClasificacionController@showIngredientes');
-        
-
-        /* FOR SECURITY */
-        Route::post('checkToken', 'AuthController@checkToken'); 
-        /*  */
 
         Route::resource('ingredientes', 'IngredienteController');
         Route::get('ingredientes-get', 'IngredienteController@indexInventary');
