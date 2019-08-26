@@ -43,6 +43,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('clasificaciones-ingredientes', 'ClasificacionController@showIngredientes');
         
 
+        /* FOR SECURITY */
+        Route::post('checkToken', 'AuthController@checkToken'); 
+        /*  */
+
         Route::resource('ingredientes', 'IngredienteController');
         Route::get('ingredientes-get', 'IngredienteController@indexInventary');
         Route::get('enfermedades-get', 'ClasificacionController@indexPreferencesUser');
