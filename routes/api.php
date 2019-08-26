@@ -54,6 +54,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('user-enfermedades-save', 'ClasificacionController@saveEnfermedadesUser'); //pending
         Route::resource('clasificaciones', 'ClasificacionController');
         Route::post('ingredientes-user-update', 'IngredienteController@updateUser');
+        Route::post('platillo-user-update', 'PlatilloController@updateUser');
         Route::get('new-recipes', 'PlatilloController@newsRecipes');
         // custom functions
     });

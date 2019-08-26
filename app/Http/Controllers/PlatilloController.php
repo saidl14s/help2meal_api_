@@ -214,6 +214,19 @@ class PlatilloController extends Controller
         return $results;
     }
 
+    public function updateUser(Request $request){
+        try{
+            $recipe_exist = PlatilloUsuario::where([
+                ['platillo_id', '=', $request->input('platillo_id')],
+                ['user_id', '=', $request->user()->id]
+            ])->firstOrFail();
+        }catch(ModelNotFoundException $e){
+            $recipe = PlatilloUsuario::create([
+                'platillo_id' => $request->input('platillo_id'),
+                'user_id' => $request->user()->id,
+            ]);
+        }
+    }
     /**
      * Display the specified resource.
      *

@@ -92,6 +92,8 @@ class AuthController extends Controller
     }
 
     public function checkToken(Request $request) {
+        $user = User::find($request->user()->id);
+
 
         return response()->json([
             'message' => 'Valid',
