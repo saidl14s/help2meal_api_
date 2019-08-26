@@ -208,7 +208,7 @@ class PlatilloController extends Controller
                 'descripcion'=> 5,//$recipe->descripcion,
                 'url_image' => 7,//$recipe->url_image
             ];
-            $results[] = $new_recipe;
+            $results[] = $recipe;//$new_recipe;
         }
        
         return $results;
