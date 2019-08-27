@@ -170,7 +170,7 @@ class PlatilloController extends Controller
         */
         
             
-        return $first_filter;// $custom_recipes;
+        return $recipes;// $custom_recipes;
         
     }
 
