@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('privacy', function () {
+    return view('privacy');
+});
 
 Route::get('/', function () {
     try {
