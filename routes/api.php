@@ -63,5 +63,7 @@ Route::group(['prefix' => 'auth'], function () {
         //
         Route::post('vget-ingredients-user-recipe', 'PlatilloController@getIngredientUserRecipev2');
         Route::post('vget-ingredients-recipe', 'PlatilloController@getIngredientRecipev2');
+        Route::post('vget-ingredients-classification', 'ClasificacionController@getIngredientsFilterClassification');
+        
     });
 });

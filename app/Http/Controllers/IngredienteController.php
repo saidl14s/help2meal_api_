@@ -122,6 +122,7 @@ class IngredienteController extends Controller
     }
 
     public function updateUser(Request $request){
+        
         try{
             $ingredient_exist = UsuarioIngrediente::where([
                 ['ingrediente_id', '=', $request->input('ingrediente_id')],
@@ -166,6 +167,7 @@ class IngredienteController extends Controller
             [
                 $ingrediente->put('clasificacion',$clasificacion)->all(),
             ], 200);
+        
     }
 
     /**

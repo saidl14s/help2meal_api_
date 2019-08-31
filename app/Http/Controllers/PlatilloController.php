@@ -217,24 +217,67 @@ class PlatilloController extends Controller
     }
 
     public function updateUser(Request $request){
-        try{
+
+        // registrarle al usuario el platillo como ya cocinado
+        /*try{
             $recipe_exist = PlatilloUsuario::where([
                 ['platillo_id', '=', $request->input('platillo_id')],
                 ['user_id', '=', $request->user()->id]
             ])->firstOrFail();
-            return response()->json([
-                'message'      => 'Case 1'
-            ], 200); 
         }catch(ModelNotFoundException $e){
             $recipe = PlatilloUsuario::create([
                 'platillo_id' => $request->input('platillo_id'),
                 'user_id' => $request->user()->id,
             ]);
-            return response()->json([
-                'message'      => 'Case 2'
-            ], 200); 
+        }*/
+
+        // actualizar el inventario del usuario
+
+        //$request->input('platillo_id');
+        //$request->user()->id;
+            /*return response()->json([
+        'message'      => 'Case 2'
+    ], 200); */
+        
+        $user_all_ingredients = UsuarioIngrediente::where('user_id', $request->user()->id )->get();
+        $ingredients_user = array();
+        foreach ($user_all_ingredients as $ingredient) {
+            $ingredients_user[] = $ingredient->ingrediente_id;
+        }
+
+        $recipe_all_ingredients = PlatilloIngrediente::where('platillo_id', $request->input('platillo_id') )->get();
+        $ingredients_recipe = array();
+        $cantidades_recipe = array();
+        foreach ($recipe_all_ingredients as $ingredient) {
+            $ingredients_recipe[] = $ingredient->ingrediente_id;
+            $cantidades_recipe[] = $ingredient->cantidad;
         }
         
+        $ingredients_coincidencias_ = array_intersect($ingredients_recipe, $ingredients_user);
+        $index_ = 0;
+        $message_ = "";
+        foreach ($ingredients_coincidencias_ as $ingredient) {
+            $cantidad_recipe = $cantidades_recipe[$index_];
+            try{
+                $ingredient_exist = UsuarioIngrediente::where([
+                    ['ingrediente_id', '=', $ingredient],
+                    ['user_id', '=', $request->user()->id]
+                ])->firstOrFail();
+                if( $cantidad_recipe < $ingredient_exist->cantidad){
+                    $ingredient_exist->cantidad = $ingredient_exist->cantidad - $cantidad_recipe;
+                    $ingredient_exist->save();
+                    $message_ += " Se agrego";
+                }else{
+                    //$ingredient_exist->cantidad = 0;
+                    $ingredient_exist->delete();
+                    $message_ += " Se elimino";
+                }
+            }catch(ModelNotFoundException $e){}
+            $index_++;
+        }
+        return response()->json([
+            'message'      => $message_
+        ], 200);
     }
     /**
      * Display the specified resource.

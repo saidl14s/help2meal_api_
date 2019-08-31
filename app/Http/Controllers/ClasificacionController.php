@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \App\Clasificacion;
 use \App\UsuarioEnfermedad;
 use \App\UsuarioGusto;
+use \App\UsuarioIngrediente;
+use \App\Ingrediente;
 
 class ClasificacionController extends Controller
 {
@@ -149,6 +151,7 @@ class ClasificacionController extends Controller
                 //$clasificacion->put('ingredientes',$ingredientes)->all(),
                 //$ingredientes
                 Clasificacion::find($id)->ingredientes, 200);
+        
     }
 
     public function getEnfermedades(){
@@ -191,5 +194,26 @@ class ClasificacionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function getIngredientsFilterClassification(Request $request){
+        $ingredients = array();
+        $ingredients_db = Ingrediente::where('clasificacion_id', $request->input('clasificacion_id'))->get();
+        foreach ($ingredients_db as $ingredient_db) {
+            //$ingredient_db->id;
+            try{
+                $ingredient_user = UsuarioIngrediente::where([
+                    ['ingrediente_id', '=', $ingredient_db->id],
+                    ['user_id', '=', $request->user()->id]
+                ])->firstOrFail();
+                $ingredient_db->cantidad = $ingredient_user->cantidad;    
+            }catch(ModelNotFoundException $e){
+                $ingredient_db->cantidad = 0;
+            }
+            $ingredients[] = $ingredient_db;
+        }
+        
+        return $ingredients;
     }
 }
