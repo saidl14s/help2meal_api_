@@ -242,9 +242,11 @@ class PlatilloController extends Controller
         $recipe_all_ingredients = PlatilloIngrediente::where('platillo_id', $request->input('platillo_id') )->get();
         $ingredients_recipe = array();
         $cantidades_recipe = array();
+        $nombre_recipe = array();
         foreach ($recipe_all_ingredients as $ingredient) {
             $ingredients_recipe[] = $ingredient->ingrediente_id;
             $cantidades_recipe[] = $ingredient->cantidad;
+            $nombre_recipe[] = $ingredient->nombre;
         }
         
         $ingredients_coincidencias_ = array_intersect($ingredients_recipe, $ingredients_user);
@@ -260,11 +262,11 @@ class PlatilloController extends Controller
                 if( $cantidad_recipe < $ingredient_exist->cantidad){
                     $ingredient_exist->cantidad = $ingredient_exist->cantidad - $cantidad_recipe;
                     $ingredient_exist->save();
-                    $message_ += " Se agrego";
+                    //$message_ .= " Se agrego";
                 }else{
                     //$ingredient_exist->cantidad = 0;
                     $ingredient_exist->delete();
-                    $message_ += " Se elimino";
+                    $message_ .= "Ya no te queda más de ".$nombre_recipe[$index_] . " te recomendamos surtirlo de nuevo.";
                 }
             }catch(ModelNotFoundException $e){}
             $index_++;
