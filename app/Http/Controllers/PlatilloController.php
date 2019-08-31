@@ -219,7 +219,7 @@ class PlatilloController extends Controller
     public function updateUser(Request $request){
 
         // registrarle al usuario el platillo como ya cocinado
-        /*try{
+        try{
             $recipe_exist = PlatilloUsuario::where([
                 ['platillo_id', '=', $request->input('platillo_id')],
                 ['user_id', '=', $request->user()->id]
@@ -229,15 +229,9 @@ class PlatilloController extends Controller
                 'platillo_id' => $request->input('platillo_id'),
                 'user_id' => $request->user()->id,
             ]);
-        }*/
+        }
 
         // actualizar el inventario del usuario
-
-        //$request->input('platillo_id');
-        //$request->user()->id;
-            /*return response()->json([
-        'message'      => 'Case 2'
-    ], 200); */
         
         $user_all_ingredients = UsuarioIngrediente::where('user_id', $request->user()->id )->get();
         $ingredients_user = array();
