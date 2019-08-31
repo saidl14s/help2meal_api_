@@ -246,7 +246,8 @@ class PlatilloController extends Controller
         foreach ($recipe_all_ingredients as $ingredient) {
             $ingredients_recipe[] = $ingredient->ingrediente_id;
             $cantidades_recipe[] = $ingredient->cantidad;
-            $nombre_recipe[] = $ingredient->nombre;
+            //$nombre_recipe[] = $ingredient->nombre;
+            $nombre_recipe[] = 'reparar en server 250 PLATILLOCONTROLLER';
         }
         
         $ingredients_coincidencias_ = array_intersect($ingredients_recipe, $ingredients_user);
@@ -271,9 +272,16 @@ class PlatilloController extends Controller
             }catch(ModelNotFoundException $e){}
             $index_++;
         }
-        return response()->json([
-            'message'      => $message_
-        ], 200);
+        if($message_ != ""){
+            return response()->json([
+                'message'      => $message_
+            ], 201);
+        }else{
+            return response()->json([
+                'message'      => null
+            ], 200);
+        }
+        
     }
     /**
      * Display the specified resource.
