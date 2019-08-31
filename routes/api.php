@@ -58,5 +58,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('new-recipes', 'PlatilloController@newsRecipes');
         Route::get('get-ingredientes-clasificaciones', 'IngredienteController@getIngredientClasificacions');
         // custom functions
+
+
+        //
+        Route::post('vget-ingredients-user-recipe/', 'PlatilloController@getIngredientUserRecipev2');
+        Route::post('vget-ingredients-recipe/', 'PlatilloController@getIngredientRecipev2');
     });
 });

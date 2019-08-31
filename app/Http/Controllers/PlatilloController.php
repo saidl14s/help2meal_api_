@@ -13,6 +13,7 @@ use \App\PlatilloUsuario;
 use \App\PlatilloGusto;
 use \App\User;
 use \App\UsuarioEnfermedad;
+use \App\UsuarioIngrediente;
 use \App\UsuarioGusto;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -259,6 +260,7 @@ class PlatilloController extends Controller
         $array = Arr::add($recipe, 'ingredients',$all_ingredients);
         return $array;*/
     }
+
     public function getIngredientRecipe($id)
     {
         //
@@ -311,4 +313,73 @@ class PlatilloController extends Controller
     {
         //
     }
+
+
+
+
+    /// v2
+    public function getIngredientRecipev2(Request $request)
+    {
+        //
+        $id = $request->input('platillo_id');
+        //return Platillo::find($id);
+        $recipe = Platillo::find($id);
+        $ingredients = PlatilloIngrediente::where('platillo_id', $recipe->id )->get();
+        $info_ingredient = array();
+        $all_ingredients = array();
+        foreach($ingredients as $ingredient){
+            $ing = Ingrediente::find($ingredient->ingrediente_id);
+            $count = $ingredient->cantidad;
+            $info_ingredient = Arr::add($ing, 'cantidad', $count);
+
+            try{
+                $user_exist = UsuarioIngrediente::where([
+                    ['ingrediente_id', '=', $ingredient->ingrediente_id ],
+                    ['user_id', '=', $request->user()->id]
+                ])->firstOrFail();
+                //$info_ingredient = Arr::add($info_ingredient, 'user_exist', true);
+                //$all_ingredients[]=$info_ingredient;
+            }catch(ModelNotFoundException $e){
+                //$info_ingredient = Arr::add($info_ingredient, 'user_exist', false);
+                $all_ingredients[]=$info_ingredient;
+            }
+
+            
+            //$array = Arr::add($recipe, 'ingredients',$info_ingredient);
+        }
+        return $all_ingredients;
+    }
+
+    public function getIngredientUserRecipev2(Request $request)
+    {
+        //
+        $id = $request->input('platillo_id');
+        //return Platillo::find($id);
+        $recipe = Platillo::find($id);
+        $ingredients = PlatilloIngrediente::where('platillo_id', $recipe->id )->get();
+        $info_ingredient = array();
+        $all_ingredients = array();
+        foreach($ingredients as $ingredient){
+            $ing = Ingrediente::find($ingredient->ingrediente_id);
+            $count = $ingredient->cantidad;
+            $info_ingredient = Arr::add($ing, 'cantidad', $count);
+
+            try{
+                $user_exist = UsuarioIngrediente::where([
+                    ['ingrediente_id', '=', $ingredient->ingrediente_id ],
+                    ['user_id', '=', $request->user()->id]
+                ])->firstOrFail();
+                //$info_ingredient = Arr::add($info_ingredient, 'user_exist', true);
+                $all_ingredients[]=$info_ingredient;
+            }catch(ModelNotFoundException $e){
+                //$info_ingredient = Arr::add($info_ingredient, 'user_exist', false);
+                //$all_ingredients[]=$info_ingredient;
+            }
+
+            
+            //$array = Arr::add($recipe, 'ingredients',$info_ingredient);
+        }
+        return $all_ingredients;
+    }
+    
 }
