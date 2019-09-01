@@ -14,6 +14,10 @@ Route::get('privacy', function () {
     return view('privacy');
 });
 
+Route::get('install-play-store', function () {
+    return redirect('https://play.google.com/store/apps/details?id=com.itcg.help2meal');
+});
+
 Route::get('/', function () {
     try {
         DB::connection()->getPdo();
