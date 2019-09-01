@@ -114,67 +114,6 @@ class PlatilloController extends Controller
         return $results;
     }
 
-    public function ai(Request $request){
-
-        $first_filter = array();
-        $custom_recipes = array();
-
-        $user_ = $request->user()->id;
-        $gustos_user = UsuarioGusto::where('user_id', $user_ )->get();
-        $enfermedades_user = UsuarioEnfermedad::where('user_id', $user_ )->get();
-
-        $gustos_ = array();
-        foreach ($gustos_user as $gusto_user) {
-            $gustos_[] = $gusto_user->gusto_id;
-        }
-
-        $enfermedades_ = array();
-        foreach ($enfermedades_user as $enfermedad_user) {
-            $enfermedades_[] = $enfermedad_user->enfermedad_id;
-        }
-
-
-        $custom_recipes = array();
-        $recipes = Platillo::where('tipo_recomendacion', $request->input('tipo_recomendacion'))->get();
-
-        foreach($recipes as $recipe){
-            $temp_enfermedades = array();
-
-            $prohibido = PlatilloEnfermedad::where('platillo_id', $recipe->id)->get();
-            
-            foreach ($prohibido as $enfermedad) {
-                $temp_enfermedades[] = $enfermedad->enfermedad_id;
-            }
-            $enfemedades_coincidencias_ = array_intersect($temp_enfermedades, $enfermedades_);
-            if( count( $enfemedades_coincidencias_ ) == 0 ){
-                $first_filter[] = $recipe;
-            }
-
-        }
-
-        foreach($first_filter as $recipe){
-            $temp_gustos = array();
-
-            $gustos = PlatilloGusto::where('platillo_id', $recipe->id)->get();
-            foreach ($gustos as $gusto) {
-                $temp_gustos[] = $gusto->gusto_id;
-            }
-            $gustos_coincidencias_ = array_intersect($temp_gustos, $gustos_);
-            if( count( $gustos_coincidencias_ ) > 0 ){
-                $custom_recipes[] = $recipe;
-            }
-        }
-
-        // ultimo filtro es para coincidencia entre ingredientes
-        /**
-         * 
-        */
-        
-            
-        return $recipes;// $custom_recipes;
-        
-    }
-
     public function newsRecipes(){
 
         /*return [
@@ -429,4 +368,95 @@ class PlatilloController extends Controller
         return $all_ingredients;
     }
     
+
+    public function ai(Request $request){
+
+        $first_filter = array(); // enfermedades
+        $second_filter = array(); // gusto
+        $third_filter = array(); // match ingredientes
+
+        $user_ = $request->user()->id;
+        $gustos_user = UsuarioGusto::where('user_id', $user_ )->get();
+        $enfermedades_user = UsuarioEnfermedad::where('user_id', $user_ )->get();
+        $ingredientes_user = UsuarioIngrediente::where('user_id', $user_ )->get();
+
+        $gustos_ = array();
+        foreach ($gustos_user as $gusto_user) {
+            $gustos_[] = $gusto_user->gusto_id;
+        }
+
+        $enfermedades_ = array();
+        foreach ($enfermedades_user as $enfermedad_user) {
+            $enfermedades_[] = $enfermedad_user->enfermedad_id;
+        }
+
+        $ingredientes_ = array();
+        foreach ($ingredientes_user as $ingrediente_user) {
+            $ingredientes_[] = $ingrediente_user->ingrediente_id;
+        }
+
+        $recipes = Platillo::where('tipo_recomendacion', $request->input('tipo_recomendacion'))->get();
+
+        foreach($recipes as $recipe){
+            $temp_enfermedades = array();
+
+            $prohibido = PlatilloEnfermedad::where('platillo_id', $recipe->id)->get();
+            
+            foreach ($prohibido as $enfermedad) {
+                $temp_enfermedades[] = $enfermedad->enfermedad_id;
+            }
+            $enfemedades_coincidencias_ = array_intersect($temp_enfermedades, $enfermedades_);
+            if( count( $enfemedades_coincidencias_ ) == 0 ){
+                $first_filter[] = $recipe;
+            }
+
+        }
+
+        foreach($first_filter as $recipe){
+            $temp_gustos = array();
+
+            $gustos = PlatilloGusto::where('platillo_id', $recipe->id)->get();
+            foreach ($gustos as $gusto) {
+                $temp_gustos[] = $gusto->gusto_id;
+            }
+            $gustos_coincidencias_ = array_intersect($temp_gustos, $gustos_);
+            if( count( $gustos_coincidencias_ ) > 0 ){
+                $second_filter[] = $recipe;
+            }
+        }
+
+        // ultimo filtro es para coincidencia entre ingredientes
+        /**
+         * 
+        */
+        $temp_ingredientes_user = array();
+        foreach ($ingredientes_user as $ingrediente) {
+            $temp_ingredientes_user[] = $ingrediente->ingrediente_id;
+        }
+
+        foreach($second_filter as $recipe){
+            $temp_ingredients = array();
+
+            $ingredientes = PlatilloIngrediente::where('platillo_id', $recipe->id)->get();
+            foreach ($ingredientes as $ingrediente) {
+                $temp_ingredients[] = $ingrediente->ingrediente_id;
+            }
+
+            $limit = count( $temp_ingredients );
+
+            $ingredientes_coincidencias_ = array_intersect($temp_ingredients, $temp_ingredientes_user);
+
+            $num_coincidencias =  count( $ingredientes_coincidencias_ ) ;
+            if($num_coincidencias >= ($limit / 2)){ // mayor o igual que el numero total de ingredientes
+                $third_filter[] = $recipe;
+                //$third_filter[] = $num_coincidencias;
+            }
+        }
+            
+        // ordenar el third_filter conforme a mayor numero de coincidencia entre ingredientes
+        /* * */
+        
+        return $third_filter; // third_filter second_filter first_filter
+        
+    }
 }
