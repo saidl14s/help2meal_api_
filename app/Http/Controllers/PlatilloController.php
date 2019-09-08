@@ -186,7 +186,8 @@ class PlatilloController extends Controller
             $ingredients_recipe[] = $ingredient->ingrediente_id;
             $cantidades_recipe[] = $ingredient->cantidad;
             //$nombre_recipe[] = $ingredient->nombre;
-            $nombre_recipe[] = 'reparar en server 250 PLATILLOCONTROLLER';
+            $tempIngredient = Ingrediente::find($ingredient->ingrediente_id);
+            $nombre_recipe[] = $tempIngredient->nombre;
         }
         
         $ingredients_coincidencias_ = array_intersect($ingredients_recipe, $ingredients_user);
@@ -458,7 +459,7 @@ class PlatilloController extends Controller
 
         if(count ( $third_filter ) > 0 )        
             return $third_filter; // third_filter second_filter first_filter
-        else 
+        else // recipe null
             return response()->json([
                 [
                 'id' => 0,
