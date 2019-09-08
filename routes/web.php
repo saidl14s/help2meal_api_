@@ -10,6 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function () {
+    return view('index');
+});
+
 Route::get('privacy', function () {
     return view('privacy');
 });
@@ -22,7 +26,7 @@ Route::get('install-play-store', function () {
     return redirect('https://play.google.com/store/apps/details?id=com.itcg.help2meal');
 });
 
-Route::get('/', function () {
+Route::get('status', function () {
     try {
         DB::connection()->getPdo();
         if(DB::connection()->getDatabaseName()){
@@ -37,6 +41,7 @@ Route::get('/', function () {
             'message' => 'Could not open connection to database server.  Please check your configuration!'], 503);
     }
 });
+
 Route::get('/web/auth/login', 'AdministradorController@showLogin')->name('login');
 Route::post('/web/auth/login_post', 'AdministradorController@clienLogin')->name('login_post');
 /* Custom urls web */

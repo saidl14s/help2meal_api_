@@ -455,8 +455,16 @@ class PlatilloController extends Controller
             
         // ordenar el third_filter conforme a mayor numero de coincidencia entre ingredientes
         /* * */
-        
-        return $third_filter; // third_filter second_filter first_filter
+
+        if(count ( $third_filter ) > 0 )        
+            return $third_filter; // third_filter second_filter first_filter
+        else 
+            return response()->json([
+                'id' => 0,
+                'nombre' => '¡Lo sentimos! No encontramos alguna receta adecuada para ti',
+                'descripcion' => '',
+                'url_image' => 'https://drive.google.com/uc?export=download&id=1mqAXpz03koHJABInjAg7PYJk52xCsJNY'
+            ]);
         
     }
 }
