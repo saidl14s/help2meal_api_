@@ -391,7 +391,7 @@ class PlatilloController extends Controller
         if(count($gustos_) == 0){
             $all_ =  Clasificacion::where('tipo', 'preferencia' )->get();
             foreach ($all_ as $gusto_user) {
-                $gustos_[] = $gusto_user->gusto_id;
+                $gustos_[] = $gusto_user->id;
             }
         }
         // ENEIT
