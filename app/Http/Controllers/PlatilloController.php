@@ -15,6 +15,8 @@ use \App\User;
 use \App\UsuarioEnfermedad;
 use \App\UsuarioIngrediente;
 use \App\UsuarioGusto;
+use \App\Clasificacion;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PlatilloController extends Controller
