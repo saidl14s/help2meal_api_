@@ -458,7 +458,7 @@ class PlatilloController extends Controller
             $ingredientes_coincidencias_ = array_intersect($temp_ingredients, $temp_ingredientes_user);
 
             $num_coincidencias =  count( $ingredientes_coincidencias_ ) ;
-            if($num_coincidencias >= ($limit / 2)){ // mayor o igual que el numero total de ingredientes
+            if($num_coincidencias >= ($limit / 4)){ // mayor o igual que el numero total de ingredientes
                 $third_filter[] = $recipe;
                 //$third_filter[] = $num_coincidencias;
             }
